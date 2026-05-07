@@ -1,437 +1,339 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Letterly — Your letters. Finally clear.</title>
-<meta name="description" content="Letterly explains complex letters in plain, simple language. Built for dyslexia."/>
-<meta name="theme-color" content="#3D5A80"/>
-<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%233D5A80'/><rect x='6' y='9' width='20' height='16' rx='2.5' fill='none' stroke='%23fff' stroke-width='1.75'/><path d='M7 11 L16 18 L25 11' fill='none' stroke='%23fff' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/></svg>"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic-regular.min.css"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Tydify — Förstå dina brev</title>
+<meta name="description" content="Tydify förklarar krångliga brev på enkel svenska för personer med dyslexi." />
+<meta property="og:title" content="Tydify" />
+<meta property="og:description" content="Tydify förklarar krångliga brev på enkel svenska." />
+<meta property="og:locale" content="sv_SE" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic-regular.min.css" />
 <style>
-:root{
-  --bg:#FAF7F2;--surface:#FFFFFF;--raised:#F2EDE4;--border:#E8E0D5;
-  --text:#1A1714;--muted:#6B6560;
-  --accent:#3D5A80;--accent-hover:#2C4A6E;--accent-light:#EBF0F7;
-  --success:#2D6A4F;--success-bg:#F0FAF4;
-  --warning:#7D4E1B;--warning-bg:#FEF6EC;
-  --danger:#8B1A1A;--danger-bg:#FEF2F2;
-  --dark:#1A1714;--dark-surface:#252119;--darker:#0F0D0A;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{
-  background:var(--bg);color:var(--text);
-  font-family:OpenDyslexic,Arial,sans-serif;
-  font-size:18px;line-height:1.85;letter-spacing:0.06em;word-spacing:0.14em;
-  -webkit-font-smoothing:antialiased;
-}
-img,svg{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-.container{max-width:1100px;margin:0 auto;padding:0 24px}
-.section{padding:96px 0}
-@media (max-width:768px){.section{padding:64px 0}}
+  :root{
+    --bg:#FAF7F2; --fg:#1A1714; --muted:#6B6560; --border:#E8E0D5;
+    --primary:#3D5A80; --accent:#EBF0F7; --dark:#1A1714; --darker:#0F0D0A;
+    --success:#2D6A4F; --warning:#7D4E1B; --danger:#8B1A1A;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    font-family:OpenDyslexic, Arial, Helvetica, sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  @media (max-width:720px){ section{padding:64px 0} }
+  h1,h2,h3{margin:0;letter-spacing:-0.01em}
+  h1{font-size:clamp(34px,5vw,56px);font-weight:700;line-height:1.1}
+  h2{font-size:clamp(28px,3.5vw,40px);font-weight:700;line-height:1.2;margin-bottom:16px}
+  h3{font-size:20px;font-weight:700;margin-bottom:8px}
+  p{margin:0;color:var(--muted)}
+  .label{font-size:12px;font-weight:700;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--primary);margin-bottom:16px}
 
-/* Nav */
-nav.top{
-  position:sticky;top:0;z-index:50;background:#fff;
-  border-bottom:1px solid var(--border);
-}
-nav.top .row{display:flex;align-items:center;justify-content:space-between;height:64px}
-.brand{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-weight:700;font-size:20px}
-.brand svg{width:28px;height:28px}
-.btns{display:flex;gap:8px}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  height:40px;padding:0 16px;border-radius:8px;font-weight:700;font-size:14px;
-  border:1px solid var(--border);background:#fff;color:var(--muted);cursor:not-allowed;
-  position:relative;
-}
-.btn .soon{font-size:11px;font-weight:600;opacity:.7}
+  /* Nav */
+  nav.top{position:sticky;top:0;background:rgba(250,247,242,0.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:50}
+  nav.top .row{display:flex;align-items:center;justify-content:space-between;
+    height:64px}
+  .brand{font-weight:700;color:var(--primary);font-size:20px}
+  .store-btn{display:inline-flex;align-items:center;gap:6px;
+    padding:8px 14px;border:1px solid var(--border);border-radius:8px;
+    font-size:13px;color:var(--muted);background:var(--card)}
+  .store-row{display:flex;gap:8px;align-items:center}
+  .store-row .soon{font-size:11px;color:var(--muted);letter-spacing:0.1em;
+    text-transform:uppercase}
 
-/* Hero */
-.hero{background:var(--dark);color:#fff;padding:120px 0}
-.hero .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center}
-.hero h1{font-size:60px;line-height:1.1;font-weight:700;letter-spacing:0.01em}
-.hero p.lead{margin-top:24px;font-size:20px;color:rgba(255,255,255,.72);max-width:480px}
-.hero .ctas{margin-top:40px;display:flex;gap:12px;flex-wrap:wrap}
-.btn-dark{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
-  color:rgba(255,255,255,.6);height:48px;padding:0 20px;border-radius:8px;
-  font-weight:700;font-size:14px;cursor:not-allowed;display:inline-flex;align-items:center;gap:10px;
-}
-.glow{position:absolute;inset:-40px;background:radial-gradient(closest-side,rgba(61,90,128,.35),transparent);filter:blur(40px);z-index:0}
-.mock-wrap{position:relative;display:flex;justify-content:center}
-@media (max-width:900px){
-  .hero{padding:80px 0}
-  .hero .grid{grid-template-columns:1fr;gap:48px}
-  .hero h1{font-size:40px}
-}
+  /* Hero */
+  .hero{background:var(--dark);color:#fff}
+  .hero h1, .hero h2{color:#fff}
+  .hero p{color:rgba(255,255,255,0.7)}
+  .hero .grid{display:grid;grid-template-columns:1fr 320px;gap:64px;align-items:center}
+  @media (max-width:860px){ .hero .grid{grid-template-columns:1fr} }
+  .btn-dl{display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:10px;background:#2A2724;color:#fff;
+    font-weight:600;border:1px solid #3a3733;opacity:0.85;cursor:not-allowed}
+  .btn-dl small{display:block;font-size:11px;opacity:0.6;letter-spacing:0.1em}
+  .dl-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 
-/* Split */
-.split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.split.reverse{direction:rtl}
-.split.reverse > *{direction:ltr}
-@media (max-width:900px){.split,.split.reverse{grid-template-columns:1fr;gap:48px;direction:ltr}}
-.label{
-  display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.18em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:16px;
-}
-h2{font-size:40px;line-height:1.2;font-weight:700;letter-spacing:0.01em}
-@media (max-width:768px){h2{font-size:30px}}
-.sub{margin-top:16px;color:var(--muted);font-size:18px;max-width:520px}
+  /* iPhone mockup */
+  .phone{width:240px;border-radius:36px;background:#0F0D0A;padding:10px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.45);margin:0 auto}
+  .phone .screen{border-radius:28px;background:var(--bg);
+    aspect-ratio:9/19.5;overflow:hidden;position:relative;padding:18px 14px;
+    color:var(--fg)}
+  .phone .screen .h{font-size:11px;font-weight:700;color:var(--primary);
+    text-transform:uppercase;letter-spacing:0.15em}
+  .phone .screen .title{font-size:14px;font-weight:700;margin-top:4px}
+  .phone .screen .card{background:#fff;border:1px solid var(--border);
+    border-radius:10px;padding:10px;margin-top:10px;font-size:11px}
+  .phone .screen .status{border-left:3px solid var(--success);
+    background:#F0FAF4;color:var(--success);font-weight:700}
+  .phone.small{width:180px}
 
-/* Bullet list */
-.bullets{margin-top:32px;display:flex;flex-direction:column;gap:18px}
-.bullet{display:flex;gap:14px;align-items:flex-start}
-.bullet svg{flex:0 0 24px;color:var(--accent);margin-top:4px}
-.bullet span{font-size:17px;color:var(--text)}
+  /* Sections */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  @media (max-width:860px){ .split{grid-template-columns:1fr} }
+  .points{display:flex;flex-direction:column;gap:18px;margin-top:24px}
+  .points .pt{display:flex;gap:14px;align-items:flex-start}
+  .pt .dot{width:28px;height:28px;border-radius:8px;
+    background:var(--accent);color:var(--primary);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:14px;flex-shrink:0;margin-top:2px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  @media (max-width:860px){ .grid3{grid-template-columns:1fr} }
+  .step{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:24px}
+  .step .num{font-size:11px;color:var(--primary);letter-spacing:0.15em;
+    text-transform:uppercase;font-weight:700}
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+  @media (max-width:860px){ .features{grid-template-columns:1fr 1fr} }
+  @media (max-width:520px){ .features{grid-template-columns:1fr} }
+  .feature{background:var(--card);border:1px solid var(--border);
+    border-radius:12px;padding:24px}
+  .pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;justify-content:center}
+  .pill{padding:8px 14px;background:var(--card);border:1px solid var(--border);
+    border-radius:999px;font-size:13px;color:var(--fg)}
+  .center{text-align:center}
+  .cta{background:var(--dark);color:#fff;text-align:center}
+  .cta h2{color:#fff} .cta p{color:rgba(255,255,255,0.7)}
+  footer{background:var(--darker);color:rgba(255,255,255,0.7);padding:48px 0}
+  footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+  footer .links{display:flex;gap:24px;font-size:14px}
+  footer .fine{font-size:12px;color:rgba(255,255,255,0.4);margin-top:24px;text-align:center}
 
-/* Steps */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px}
-@media (max-width:900px){.steps{grid-template-columns:1fr;gap:48px}}
-.step .num{font-size:48px;font-weight:300;color:var(--accent);letter-spacing:0.02em}
-.step .mock{margin:24px 0}
-.step h3{font-size:22px;font-weight:700;margin-top:16px}
-.step p{margin-top:8px;color:var(--muted);font-size:16px}
-
-/* Features */
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-@media (max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.feature-grid{grid-template-columns:1fr}}
-.feature{background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;transition:transform .2s, border-color .2s}
-.feature:hover{transform:translateY(-2px);border-color:#C8C2BA}
-.feature svg{color:var(--accent);width:24px;height:24px}
-.feature h4{font-size:17px;font-weight:700;margin-top:16px}
-.feature p{margin-top:6px;color:var(--muted);font-size:15px;line-height:1.7}
-
-/* Showcase */
-.showcase{background:var(--dark);color:#fff;text-align:center}
-.showcase h2{color:#fff}
-.showcase .sub{color:rgba(255,255,255,.65);margin-left:auto;margin-right:auto}
-.compare{margin-top:64px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
-.compare .item{text-align:center}
-.compare .cap{font-size:13px;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,.55);margin-bottom:16px}
-.compare .cap.acc{color:#7FA4D1}
-.arrow{color:rgba(255,255,255,.4);width:36px;height:36px}
-
-/* CTA */
-.cta{background:var(--dark);color:#fff;text-align:center}
-.cta h2{color:#fff}
-.cta .sub{color:rgba(255,255,255,.65);margin:16px auto 0}
-.cta .btns{justify-content:center;margin-top:40px}
-
-/* Footer */
-footer{background:var(--darker);color:rgba(255,255,255,.6);padding:32px 0}
-footer .row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px}
-footer .brand{color:#fff}
-footer a:hover{color:#fff}
-
-/* Reveal */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-}
+  .reveal{opacity:0;transform:translateY(12px);transition:all 600ms ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+  }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="top">
-  <div class="container row">
-    <span class="brand">
-      <svg viewBox="0 0 32 32" fill="none"><rect x="0" y="0" width="32" height="32" rx="7" fill="#3D5A80"/><rect x="6" y="9" width="20" height="16" rx="2.5" stroke="#fff" stroke-width="1.75"/><path d="M7 11 L16 18 L25 11" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Letterly
-    </span>
-    <div class="btns">
-      <button class="btn" disabled>iOS <span class="soon">Soon</span></button>
-      <button class="btn" disabled>Android <span class="soon">Soon</span></button>
+  <div class="wrap row">
+    <div class="brand">Tydify</div>
+    <div class="store-row">
+      <span class="soon">Kommer snart</span>
+      <span class="store-btn">App Store</span>
+      <span class="store-btn">Google Play</span>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="container grid">
-    <div>
-      <h1>Your letters.<br/>Finally clear.</h1>
-      <p class="lead">Letterly explains complex letters in plain, simple language.</p>
-      <div class="ctas">
-        <button class="btn-dark">Download for iOS · Soon</button>
-        <button class="btn-dark">Get on Android · Soon</button>
-      </div>
-    </div>
-    <div class="mock-wrap">
-      <div class="glow"></div>
-      <div style="position:relative;z-index:1" id="mock-hero"></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROBLEM -->
-<section class="section" style="background:var(--bg)">
-  <div class="container split">
-    <div class="mock-wrap reveal"><div id="mock-problem"></div></div>
+  <div class="wrap grid">
     <div class="reveal">
-      <span class="label">The problem</span>
-      <h2>Letters nobody can understand.</h2>
-      <div class="bullets">
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h12M4 18h8"/></svg><span>Written in complicated legal language.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Important deadlines buried in long text.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v5"/></svg><span>Stressful and confusing for everyone.</span></div>
+      <h1>Dina brev.<br/>Äntligen enkla.</h1>
+      <p style="margin-top:20px;font-size:18px;max-width:480px">
+        Tydify förklarar krångliga brev på enkel svenska. På sekunder.
+      </p>
+      <div class="dl-row">
+        <span class="btn-dl">Ladda ner för iOS<small>Kommer snart</small></span>
+        <span class="btn-dl">Ladda ner för Android<small>Kommer snart</small></span>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- SOLUTION -->
-<section class="section" style="background:#fff">
-  <div class="container split reverse">
-    <div class="mock-wrap reveal"><div id="mock-solution"></div></div>
     <div class="reveal">
-      <span class="label">The solution</span>
-      <h2>We read it for you.</h2>
-      <div class="bullets">
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg><span>Plain language explanation in seconds.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg><span>Clear status: action needed or not.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span>Simple checklist of what to do.</span></div>
+      <div class="phone">
+        <div class="screen">
+          <div class="h">Status</div>
+          <div class="card status">Åtgärd krävs</div>
+          <div class="h" style="margin-top:14px">Vad betyder det här?</div>
+          <div class="card">Du har en obetald räkning. Betala senast 2026-05-20.</div>
+          <div class="h" style="margin-top:14px">Vad behöver du göra?</div>
+          <div class="card">✓ Betala 1 240 kr<br/>✓ Logga in på bank</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HOW -->
-<section class="section" style="background:var(--bg)">
-  <div class="container" style="text-align:center">
-    <h2>Three steps. That is it.</h2>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="num">01</div>
-        <div class="mock" id="mock-step1"></div>
-        <h3>Paste or photograph</h3>
-        <p>Copy your letter text or take a photo.</p>
-      </div>
-      <div class="step reveal">
-        <div class="num">02</div>
-        <div class="mock" id="mock-step2"></div>
-        <h3>Letterly reads it</h3>
-        <p>Our AI finds what matters in seconds.</p>
-      </div>
-      <div class="step reveal">
-        <div class="num">03</div>
-        <div class="mock" id="mock-step3"></div>
-        <h3>You understand</h3>
-        <p>Clear summary. Simple actions. No confusion.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="section" style="background:#fff">
-  <div class="container" style="text-align:center">
-    <h2>Built for real people.</h2>
-    <p class="sub" style="margin:16px auto 0">Every detail designed for people who find reading difficult.</p>
-    <div class="feature-grid" style="text-align:left">
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg><h4>Dyslexia friendly</h4><p>OpenDyslexic font and bionic reading built in.</p></div>
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><h4>Stays private</h4><p>Your letter is never stored anywhere.</p></div>
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg><h4>Photo or paste</h4><p>Works with physical and digital letters.</p></div>
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><h4>Sweden and USA</h4><p>More countries coming soon.</p></div>
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><h4>Deadline alerts</h4><p>Never miss an important date again.</p></div>
-      <div class="feature reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg><h4>Always free</h4><p>No subscription. No premium. Free forever.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- SHOWCASE -->
-<section class="section showcase">
-  <div class="container">
-    <h2>See the difference.</h2>
-    <p class="sub" style="max-width:520px">The same letter. Before and after Letterly.</p>
-    <div class="compare">
-      <div class="item reveal">
-        <div class="cap">The original letter</div>
-        <div id="mock-before"></div>
-      </div>
-      <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      <div class="item reveal">
-        <div class="cap acc">With Letterly</div>
-        <div id="mock-after"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ACCESSIBILITY -->
-<section class="section" style="background:var(--bg)">
-  <div class="container split">
+<section>
+  <div class="wrap split">
     <div class="reveal">
-      <span class="label">Accessibility</span>
-      <h2>Designed for how you read.</h2>
-      <div class="bullets">
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg><span>OpenDyslexic font reduces reading errors.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l5-14h2l5 14M7 14h8"/></svg><span>Bionic reading helps eyes track words.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3l5-4v13l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg><span>Text-to-speech reads everything aloud.</span></div>
-        <div class="bullet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="2"/><circle cx="18" cy="16" r="2"/><path d="M4 8h16M4 16h16"/></svg><span>Customize font size and contrast.</span></div>
+      <div class="label">Problemet</div>
+      <h2>Brev ingen förstår.</h2>
+      <div class="points">
+        <div class="pt"><span class="dot">!</span><div>Skrivna på svårt byråkratspråk</div></div>
+        <div class="pt"><span class="dot">!</span><div>Viktiga datum gömda i lång text</div></div>
+        <div class="pt"><span class="dot">!</span><div>Stressande och förvirrande</div></div>
       </div>
     </div>
-    <div class="mock-wrap reveal"><div id="mock-a11y"></div></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section cta">
-  <div class="container">
-    <h2>Ready for clear letters?</h2>
-    <p class="sub" style="max-width:440px">Free on iOS and Android. Coming soon.</p>
-    <div class="btns">
-      <button class="btn-dark">Download for iOS · Soon</button>
-      <button class="btn-dark">Get on Android · Soon</button>
+    <div class="reveal center">
+      <div class="phone small">
+        <div class="screen" style="font-size:9px;color:#3a3733;line-height:1.4">
+          Med stöd av 12 § lagen (1990:746) om betalningsföreläggande och handräckning åläggs Ni härmed att senast den nedan angivna förfallodagen…
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<section style="background:#F2EDE4">
+  <div class="wrap split">
+    <div class="reveal center">
+      <div class="phone small">
+        <div class="screen">
+          <div class="card status">Inget att oroa sig för</div>
+          <div class="card" style="margin-top:8px">Det är en bekräftelse. Du behöver inte göra något.</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="label">Lösningen</div>
+      <h2>Vi läser det åt dig.</h2>
+      <div class="points">
+        <div class="pt"><span class="dot">✓</span><div>Enkel förklaring på sekunder</div></div>
+        <div class="pt"><span class="dot">✓</span><div>Tydlig status — behöver du agera?</div></div>
+        <div class="pt"><span class="dot">✓</span><div>Enkel lista på vad du ska göra</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <h2 class="reveal">Tre steg. Inget mer.</h2>
+    <div class="grid3">
+      <div class="step reveal">
+        <div class="num">Steg 1</div>
+        <h3 style="margin-top:8px">Klistra in eller fotografera</h3>
+        <p>Kopiera brevtexten eller ta ett foto.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Steg 2</div>
+        <h3 style="margin-top:8px">Tydify läser det</h3>
+        <p>Vår AI hittar det viktiga på sekunder.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">Steg 3</div>
+        <h3 style="margin-top:8px">Du förstår</h3>
+        <p>Enkel sammanfattning. Tydliga steg.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F2EDE4">
+  <div class="wrap">
+    <div class="center reveal">
+      <h2>Byggt för riktiga människor.</h2>
+      <p style="max-width:560px;margin:8px auto 0">
+        Varje detalj anpassad för personer som tycker läsning är svårt.
+      </p>
+    </div>
+    <div class="features">
+      <div class="feature reveal"><h3>Dyslexianpassad</h3><p>OpenDyslexic-font och bionic läsning inbyggt.</p></div>
+      <div class="feature reveal"><h3>Privat och säker</h3><p>Ditt originalbrev sparas aldrig.</p></div>
+      <div class="feature reveal"><h3>Foto eller text</h3><p>Fungerar med fysiska och digitala brev.</p></div>
+      <div class="feature reveal"><h3>Svenska myndigheter</h3><p>Känner igen Skatteverket, FK, CSN och mer.</p></div>
+      <div class="feature reveal"><h3>Deadlinepåminnelser</h3><p>Missa aldrig ett viktigt datum igen.</p></div>
+      <div class="feature reveal"><h3>Alltid gratis</h3><p>Ingen prenumeration. Gratis för alltid.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="center reveal">
+      <h2>Se skillnaden.</h2>
+      <p>Samma brev. Före och efter Tydify.</p>
+    </div>
+    <div class="split" style="margin-top:48px">
+      <div class="center reveal">
+        <div class="label" style="color:var(--muted)">Originalbrevet</div>
+        <div class="phone small">
+          <div class="screen" style="font-size:9px;color:#3a3733;line-height:1.4">
+            Härmed delges Ni att betalningskrav om 1 240 kronor, jämte ränta enligt 6 § räntelagen, förfaller till betalning…
+          </div>
+        </div>
+      </div>
+      <div class="center reveal">
+        <div class="label">Med Tydify</div>
+        <div class="phone small">
+          <div class="screen">
+            <div class="card status" style="border-color:var(--warning);background:#FEF6EC;color:var(--warning)">Läs noggrant</div>
+            <div class="card" style="margin-top:8px">Betala 1 240 kr senast 2026-05-20.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F2EDE4">
+  <div class="wrap center">
+    <h2 class="reveal">Fungerar med brev från</h2>
+    <div class="pills reveal">
+      <span class="pill">Skatteverket</span>
+      <span class="pill">Försäkringskassan</span>
+      <span class="pill">Kronofogden</span>
+      <span class="pill">CSN</span>
+      <span class="pill">Arbetsförmedlingen</span>
+      <span class="pill">Migrationsverket</span>
+      <span class="pill">Pensionsmyndigheten</span>
+      <span class="pill">Din bank</span>
+      <span class="pill">Din hyresvärd</span>
+      <span class="pill">Och många fler...</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap split">
+    <div class="reveal">
+      <div class="label">Tillgänglighet</div>
+      <h2>Anpassad för hur du läser.</h2>
+      <div class="points">
+        <div class="pt"><span class="dot">A</span><div>OpenDyslexic-font minskar läsfel</div></div>
+        <div class="pt"><span class="dot">B</span><div>Bionic läsning hjälper ögat följa text</div></div>
+        <div class="pt"><span class="dot">♪</span><div>Uppläsning läser allt högt</div></div>
+        <div class="pt"><span class="dot">+</span><div>Anpassa storlek och kontrast</div></div>
+      </div>
+    </div>
+    <div class="reveal center">
+      <div class="phone small">
+        <div class="screen">
+          <div class="card"><b>Beta</b>la <b>se</b>nast <b>20</b>26-<b>05</b>-<b>20</b>. <b>Lo</b>gga <b>in</b> på <b>din</b> bank.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2 class="reveal">Redo för enkla brev?</h2>
+    <p class="reveal" style="margin-top:8px">Gratis för iOS och Android. Kommer snart.</p>
+    <div class="dl-row reveal" style="justify-content:center">
+      <span class="btn-dl">Ladda ner för iOS<small>Kommer snart</small></span>
+      <span class="btn-dl">Ladda ner för Android<small>Kommer snart</small></span>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="container row">
-    <span class="brand">Letterly</span>
-    <span>© 2026 Letterly</span>
-    <span><a href="#">Privacy</a> · <a href="#">Contact</a></span>
+  <div class="wrap">
+    <div class="row">
+      <div style="color:#fff;font-weight:700;font-size:20px">Tydify</div>
+      <div class="links">
+        <span>© 2026 Tydify</span>
+        <a href="#">Integritetspolicy</a>
+        <a href="#">Kontakt</a>
+      </div>
+    </div>
+    <div class="fine">Tydify är inte kopplat till någon myndighet.</div>
   </div>
 </footer>
 
 <script>
-// iPhone mockup factory — body always drawn at base width 240, scaled to fit
-function phone({w=240, screen}){
-  const base = 240;
-  const baseH = Math.round(base * 2.05);
-  const h = Math.round(w * 2.05);
-  const r = Math.round(w * 0.14);
-  const baseR = Math.round(base * 0.14);
-  const sw = base - 14, sh = baseH - 14, sr = baseR - 4;
-  const scale = w / base;
-  return `
-  <svg viewBox="0 0 ${w} ${h}" width="${w}" style="filter:drop-shadow(0 24px 40px rgba(26,23,20,.18))">
-    <g transform="scale(${scale})">
-      <rect x="1" y="1" width="${base-2}" height="${baseH-2}" rx="${baseR}" fill="#fff" stroke="#2C2C2C" stroke-width="1.5"/>
-      <rect x="7" y="7" width="${sw}" height="${sh}" rx="${sr}" fill="${screen.bg||'#FAF7F2'}"/>
-      <rect x="${base/2-30}" y="12" width="60" height="18" rx="9" fill="#1A1714"/>
-      <g transform="translate(7,30)">
-        ${screen.body}
-      </g>
-    </g>
-  </svg>`;
-}
-
-// Screen: result (clean)
-const resultScreen = (w)=>{
-  const sw = 226;
-  return phone({w, screen:{bg:'#FAF7F2', body:`
-    <text x="20" y="28" font-family="OpenDyslexic" font-size="13" fill="#6B6560" font-weight="700" letter-spacing="2">STATUS</text>
-    <rect x="14" y="40" width="${sw-28}" height="56" rx="8" fill="#F0FAF4"/>
-    <rect x="14" y="40" width="3" height="56" fill="#2D6A4F"/>
-    <text x="28" y="62" font-family="OpenDyslexic" font-size="14" fill="#2D6A4F" font-weight="700">Action needed</text>
-    <text x="28" y="82" font-family="OpenDyslexic" font-size="11" fill="#1A1714">Pay before May 28.</text>
-    <text x="20" y="124" font-family="OpenDyslexic" font-size="13" fill="#6B6560" font-weight="700" letter-spacing="2">SUMMARY</text>
-    <rect x="14" y="136" width="${sw-28}" height="80" rx="8" fill="#FFFFFF" stroke="#E8E0D5"/>
-    <text x="26" y="158" font-family="OpenDyslexic" font-size="11" fill="#1A1714">Your tax return is</text>
-    <text x="26" y="176" font-family="OpenDyslexic" font-size="11" fill="#1A1714">approved. You owe</text>
-    <text x="26" y="194" font-family="OpenDyslexic" font-size="11" fill="#1A1714">2,400 SEK by May 28.</text>
-    <text x="20" y="244" font-family="OpenDyslexic" font-size="13" fill="#6B6560" font-weight="700" letter-spacing="2">TO DO</text>
-    <rect x="14" y="256" width="${sw-28}" height="40" rx="8" fill="#FFFFFF" stroke="#E8E0D5"/>
-    <circle cx="32" cy="276" r="7" fill="none" stroke="#3D5A80" stroke-width="1.5"/>
-    <text x="48" y="280" font-family="OpenDyslexic" font-size="11" fill="#1A1714">Pay 2,400 SEK</text>
-    <rect x="14" y="304" width="${sw-28}" height="40" rx="8" fill="#FFFFFF" stroke="#E8E0D5"/>
-    <circle cx="32" cy="324" r="7" fill="none" stroke="#3D5A80" stroke-width="1.5"/>
-    <text x="48" y="328" font-family="OpenDyslexic" font-size="11" fill="#1A1714">Set reminder</text>
-  `}});
-};
-
-// Screen: scary letter
-const scaryScreen = (w)=>{
-  const sw = 226;
-  let lines = '';
-  for(let i=0;i<18;i++){
-    const y = 30 + i*16;
-    const wd = 30 + Math.random()*(sw-60);
-    const op = 0.35 + Math.random()*0.4;
-    lines += `<rect x="${20+Math.random()*8}" y="${y}" width="${wd}" height="6" rx="2" fill="rgba(255,255,255,${op.toFixed(2)})"/>`;
-    if(Math.random()>0.7){
-      lines += `<rect x="${24+Math.random()*20}" y="${y+2}" width="${wd*0.6}" height="4" fill="rgba(255,255,255,0.18)"/>`;
-    }
-  }
-  return phone({w, screen:{bg:'#1A1714', body:`
-    <text x="20" y="20" font-family="OpenDyslexic" font-size="11" fill="rgba(255,255,255,0.55)" font-weight="700">FROM: SKATTEVERKET</text>
-    ${lines}
-  `}});
-};
-
-// Screen: paste/camera home
-const homeScreen = (w)=>{
-  const sw = 226;
-  return phone({w, screen:{bg:'#FAF7F2', body:`
-    <text x="20" y="32" font-family="OpenDyslexic" font-size="14" fill="#1A1714" font-weight="700">What does your</text>
-    <text x="20" y="50" font-family="OpenDyslexic" font-size="14" fill="#1A1714" font-weight="700">letter say?</text>
-    <rect x="14" y="76" width="${sw-28}" height="76" rx="10" fill="#FFFFFF" stroke="#E8E0D5"/>
-    <rect x="28" y="96" width="32" height="32" rx="8" fill="#EBF0F7"/>
-    <rect x="36" y="104" width="16" height="20" rx="2" fill="none" stroke="#3D5A80" stroke-width="1.5"/>
-    <text x="72" y="112" font-family="OpenDyslexic" font-size="12" fill="#1A1714" font-weight="700">Paste text</text>
-    <text x="72" y="128" font-family="OpenDyslexic" font-size="10" fill="#6B6560">Copy from the letter</text>
-    <rect x="14" y="164" width="${sw-28}" height="76" rx="10" fill="#FFFFFF" stroke="#E8E0D5"/>
-    <rect x="28" y="184" width="32" height="32" rx="8" fill="#EBF0F7"/>
-    <path d="M36 196 h3 l1.5-2 h7 L49 196 h3 v10 h-16 z" fill="none" stroke="#3D5A80" stroke-width="1.5" stroke-linejoin="round"/>
-    <circle cx="44" cy="201" r="3" fill="none" stroke="#3D5A80" stroke-width="1.5"/>
-    <text x="72" y="200" font-family="OpenDyslexic" font-size="12" fill="#1A1714" font-weight="700">Take photo</text>
-    <text x="72" y="216" font-family="OpenDyslexic" font-size="10" fill="#6B6560">Photograph the letter</text>
-  `}});
-};
-
-// Screen: loading
-const loadingScreen = (w)=>{
-  const sw = 226;
-  return phone({w, screen:{bg:'#FAF7F2', body:`
-    <circle cx="${sw/2}" cy="160" r="28" fill="#EBF0F7"/>
-    <rect x="${sw/2-12}" y="148" width="24" height="18" rx="2" fill="none" stroke="#3D5A80" stroke-width="1.75"/>
-    <path d="M${sw/2-11} 149 L${sw/2} 159 L${sw/2+11} 149" fill="none" stroke="#3D5A80" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-    <text x="${sw/2}" y="220" font-family="OpenDyslexic" font-size="12" fill="#1A1714" font-weight="700" text-anchor="middle">Reading your letter...</text>
-    <rect x="40" y="244" width="${sw-80}" height="6" rx="3" fill="#E8E0D5"/>
-    <rect x="40" y="244" width="${(sw-80)*0.6}" height="6" rx="3" fill="#3D5A80"/>
-  `}});
-};
-
-// Screen: accessibility
-const a11yScreen = (w)=>{
-  const sw = 226;
-  const row = (y,label,on)=>`
-    <text x="20" y="${y}" font-family="OpenDyslexic" font-size="12" fill="#1A1714" font-weight="700">${label}</text>
-    <rect x="${sw-58}" y="${y-12}" width="44" height="20" rx="10" fill="${on?'#3D5A80':'#C8C2BA'}"/>
-    <circle cx="${on?sw-22:sw-46}" cy="${y-2}" r="8" fill="#fff"/>
-  `;
-  return phone({w, screen:{bg:'#FAF7F2', body:`
-    <text x="20" y="28" font-family="OpenDyslexic" font-size="14" fill="#1A1714" font-weight="700">Reading</text>
-    <rect x="14" y="44" width="${sw-28}" height="190" rx="10" fill="#fff" stroke="#E8E0D5"/>
-    ${row(76,'OpenDyslexic',true)}
-    ${row(116,'Bionic reading',true)}
-    ${row(156,'Warm background',true)}
-    ${row(196,'High contrast',false)}
-  `}});
-};
-
-document.getElementById('mock-hero').innerHTML = resultScreen(280);
-document.getElementById('mock-problem').innerHTML = scaryScreen(220);
-document.getElementById('mock-solution').innerHTML = resultScreen(220);
-document.getElementById('mock-step1').innerHTML = homeScreen(160);
-document.getElementById('mock-step2').innerHTML = loadingScreen(160);
-document.getElementById('mock-step3').innerHTML = resultScreen(160);
-document.getElementById('mock-before').innerHTML = scaryScreen(220);
-document.getElementById('mock-after').innerHTML = resultScreen(220);
-document.getElementById('mock-a11y').innerHTML = a11yScreen(220);
-
-// Reveal on scroll
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-},{threshold:0.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
